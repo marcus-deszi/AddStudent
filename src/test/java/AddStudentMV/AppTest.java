@@ -3,7 +3,7 @@ package AddStudentMV;
 import domain.Nota;
 import domain.Student;
 import domain.Tema;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import repository.NotaXMLRepository;
 import repository.StudentXMLRepository;
 import repository.TemaXMLRepository;
@@ -29,13 +29,13 @@ public class AppTest {
 
     @Test
     public void addStudentTestCase1() {
-        int result = service.saveStudent("100", "Gigel", 1);
-        assert result == 0;
+        int result = service.saveStudent("-1", "Maria", 2);
+        assert result == 1;
     }
 
     @Test
     public void addStudentTestCase2() {
-        int result = service.saveStudent("100", "Gigel", 1);
+        int result = service.saveStudent("200", "Gigica", 1);
         assert result == 1;
     }
 }
