@@ -46,12 +46,12 @@ public class AppTest {
     }
 
     @Test
-    public void addAssignmentWithUnorderedDeadlines() {
+    public void addAssignmentWithIncorrectInverval() {
         assert 1 == service.saveTema("3", "Scurt/2.", 1, 7);
     }
 
     @Test
-    public void addAssignmentWithOkDeadlines() {
+    public void addAssignmentWithOkInterval() {
         assert 0 == service.saveTema("3", "Scurt/2.", 6, 2);
     }
 }
