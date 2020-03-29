@@ -1,44 +1,57 @@
-package AddStudentMV;
+package AddAssignment;
 
-import domain.Nota;
-import domain.Student;
-import domain.Tema;
 import org.junit.Test;
-import repository.NotaXMLRepository;
-import repository.StudentXMLRepository;
 import repository.TemaXMLRepository;
 import service.Service;
-import validation.NotaValidator;
-import validation.StudentValidator;
 import validation.TemaValidator;
-import validation.Validator;
 
 /**
  * Unit test for simple App.
  */
 public class AppTest {
-    private Validator<Student> studentValidator = new StudentValidator();
-    private Validator<Tema> temaValidator = new TemaValidator();
-    private Validator<Nota> notaValidator = new NotaValidator();
-
-    private StudentXMLRepository fileRepository1;
-    private NotaXMLRepository fileRepository3;
-
-    private Service service;
+    private TemaXMLRepository fileRepository2 =
+            new TemaXMLRepository(new TemaValidator(), "teme.xml");
+    private Service service = new Service(null, fileRepository2, null);
 
     @Test
     public void addAssignmentWithEmptyId() {
-
-        TemaXMLRepository fileRepository2 = new TemaXMLRepository(temaValidator, "teme.xml");
-        service = new Service(fileRepository1, fileRepository2, fileRepository3);
-
-        int result = service.saveTema("", "Scurt.", 10, 2);
-        assert result == 1;
+        assert 1 == service.saveTema("", "Scurt.", 10, 2);
     }
 
     @Test
-    public void addStudentTestCase2() {
-        int result = service.saveStudent("200", "Gigica", 1);
-        assert result == 1;
+    public void addAssignmentWithOkId() {
+        assert 0 == service.saveTema("1", "Scurt.", 10, 2);
+    }
+
+    @Test
+    public void addAssignmentWithEmptyDescription() {
+        assert 1 == service.saveTema("2", "", 10, 2);
+    }
+
+    @Test
+    public void addAssignmentWithOkDescription() {
+        assert 0 == service.saveTema("2", "Scurt/2.", 10, 2);
+    }
+
+    @Test
+    public void addAssignmentWithInvalidStartlines() {
+        assert 1 == service.saveTema("3", "Scurt/2.", 10, -1);
+        assert 1 == service.saveTema("3", "Scurt/2.", 10, 15);
+    }
+
+    @Test
+    public void addAssignmentWithInvalidDeadlines() {
+        assert 1 == service.saveTema("3", "Scurt/2.", -1, 1);
+        assert 1 == service.saveTema("3", "Scurt/2.", 15, 1);
+    }
+
+    @Test
+    public void addAssignmentWithUnorderedDeadlines() {
+        assert 1 == service.saveTema("3", "Scurt/2.", 1, 7);
+    }
+
+    @Test
+    public void addAssignmentWithOkDeadlines() {
+        assert 0 == service.saveTema("3", "Scurt/2.", 6, 2);
     }
 }
